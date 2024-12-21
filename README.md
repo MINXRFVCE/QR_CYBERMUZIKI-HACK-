@@ -41,6 +41,7 @@ Hakatone 2024 Task: Detecting QR-Codes On Video (AI)
 ## Почему выбрали QReader и python, а не другие библиотеки и среду
 
 прикрепить https://github.com/Eric-Canas/QReader?ysclid=m4xlaifikw917679933 отсюда гифку почему qreader эффективнее чем OPENcv и PyzBar
+![rotation_benchmark](https://github.com/user-attachments/assets/46603904-fe5c-4c95-a2fe-a8161e22d3d7)
 
 ## Сравнительный анализ использовать необратанное видео или обработанное видео.
 
