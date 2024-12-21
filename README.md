@@ -50,14 +50,12 @@ Hakatone 2024 Task: Detecting QR-Codes On Video (AI)
 </div>
 
 <div style="clear: both;">
-  
-<div align="center">
-| Method  | Max Rotation Degrees  |
-|---------|-----------------------|
-| Pyzbar  | 17º                   |
-| OpenCV  | 46º                   |
-| QReader | 79º                   |
-
+  <div align="center">
+    | Method  | Max Rotation Degrees  |
+    |---------|-----------------------|
+    | Pyzbar  | 17º                   |
+    | OpenCV  | 46º                   |
+    | QReader | 79º                   |
   </div>
 </div>
 
