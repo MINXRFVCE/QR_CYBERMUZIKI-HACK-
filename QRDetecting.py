@@ -13,15 +13,15 @@ def bbox_show(frame, point1 : tuple[int, int] , point2: tuple[int, int], name: s
     if is_valid: 
         color = (0, 255, 0)
     #Отрисовка текста
-    cv2.putText(img=frame, 
+    frame = cv2.putText(img=frame, 
                 text=text, 
-                point=point_text,
-                font=cv2.FONT_HERSHEY_SIMPLEX, 
+                org=point_text,
+                fontFace=cv2.FONT_HERSHEY_COMPLEX, 
                 fontScale=0.5, 
                 color=color, 
                 thickness=2)
     #Отрисовка прямоугольника
-    cv2.rectangle(frame, point1, point2, color, 2)
+    frame = cv2.rectangle(frame, point1, point2, color, 2)
 
 
 def realtime_scanning(video_path: str, valid_text: list, filter_warnings: bool=True) -> None:
