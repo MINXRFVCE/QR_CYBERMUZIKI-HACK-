@@ -38,30 +38,46 @@ Hakatone 2024 Task: Detecting QR-Codes On Video (AI)
 
 - видео готовое
 
-## Почему выбрали QReader и python, а не другие библиотеки и среду
-
-прикрепить https://github.com/Eric-Canas/QReader?ysclid=m4xlaifikw917679933 отсюда гифку почему qreader эффективнее чем OPENcv и PyzBar
-
-## Benchmark
-
-### Rotation Test
-<div>
-  <img alt="Rotation Test" title="Rotation Test" src="https://raw.githubusercontent.com/Eric-Canas/QReader/main/documentation/benchmark/rotation_benchmark.gif" width="40%">
-</div>
-
-<div style="clear: both;">
-  <div align="center">
-    | Method  | Max Rotation Degrees  |
-    |---------|-----------------------|
-    | Pyzbar  | 17º                   |
-    | OpenCV  | 46º                   |
-    | QReader | 79º                   |
-  </div>
-</div>
 
 ## Сравнительный анализ использовать необратанное видео или обработанное видео.
 
  - написать код для предобработки видео
+
+
+## Почему выбрали QReader и python, а не другие библиотеки и среду?
+
+
+B поставленной задаче использование Qreader обусловлен его работой с "искаженными" QR кодами.
+Он прекрасно показал себя в тестах, именно с теми кодами которые нам дали для примера, то есть:
+- под углом
+- другого цвета
+- маленьких размеров
+- прозрачные
+- и другие искажения
+
+В отличие от Qreader, OPENcv и PyzBar они не могут определить коды в данных состояниях
+
+Ниже вы можете увидеть почему мы выбрали именно его.
+
+## Benchmark
+
+<div>
+<img alt="Rotation Test" title="Rotation Test" src="https://raw.githubusercontent.com/Eric-Canas/QReader/main/documentation/benchmark/rotation_benchmark.gif" width="40%" align="left">
+
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  
+<div align="center">
+  
+| Библиотека  | Максимальная величина наклона  |
+|-------------|-----------------------|
+|    Pyzbar   |           17º         |
+|    OpenCV   |           46º         |
+|    QReader  |           79º         |
+  
+</div>
+</div>
+
+
+
 
 
 
