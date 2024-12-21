@@ -46,7 +46,6 @@ Hakatone 2024 Task: Detecting QR-Codes On Video (AI)
 
 ### Rotation Test
 <div>
-  <div align="center">
   <img alt="Rotation Test" title="Rotation Test" src="https://raw.githubusercontent.com/Eric-Canas/QReader/main/documentation/benchmark/rotation_benchmark.gif" width="40%">
 </div>
 
