@@ -55,16 +55,10 @@ Hakatone 2024 Task: Detecting QR-Codes On Video (AI)
 |---------|-----------------------|
 | Pyzbar  | 17º                   |
 | OpenCV  | 46º                   |
-| QReader | 79º                   |<br>
+| QReader | 79º                   |
 
   
 </div>
-</div>
-
-
-
-
-
 
 
 
@@ -72,5 +66,12 @@ Hakatone 2024 Task: Detecting QR-Codes On Video (AI)
 ## Сравнительный анализ использовать необратанное видео или обработанное видео.
 
  - написать код для предобработки видео
+</div>
+
+
+
+
+
+
 
 
