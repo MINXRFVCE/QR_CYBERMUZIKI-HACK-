@@ -46,27 +46,22 @@ Hakatone 2024 Task: Detecting QR-Codes On Video (AI)
 
 ### Rotation Test
 <div>
-<img alt="Rotation Test" title="Rotation Test" src="https://raw.githubusercontent.com/Eric-Canas/QReader/main/documentation/benchmark/rotation_benchmark.gif" width="40%" align="left">
-
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  
-<div align="center">
-  
-| Method  | Max Rotation Degrees  |
-|---------|-----------------------|
-| Pyzbar  | 17º                   |
-| OpenCV  | 46º                   |
-| QReader | 79º                   |
-
-  
+  <img alt="Rotation Test" title="Rotation Test" src="https://raw.githubusercontent.com/Eric-Canas/QReader/main/documentation/benchmark/rotation_benchmark.gif" width="40%">
 </div>
-test
 
-
+<div style="clear: both;">
+  <div align="center">
+    | Method  | Max Rotation Degrees  |
+    |---------|-----------------------|
+    | Pyzbar  | 17º                   |
+    | OpenCV  | 46º                   |
+    | QReader | 79º                   |
+  </div>
+</div>
 
 ## Сравнительный анализ использовать необратанное видео или обработанное видео.
 
  - написать код для предобработки видео
-</div>
 
 
 
