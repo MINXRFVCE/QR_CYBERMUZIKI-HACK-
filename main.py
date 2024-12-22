@@ -1,5 +1,6 @@
 import tkinter
 import customtkinter
+from CTkListbox import *
 import os
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename, asksaveasfilename
@@ -14,7 +15,7 @@ class App(customtkinter.CTk):
 
         # configure window
         self.title("Hackathon2024 - СyberMuziki")
-        self.geometry(f"{400}x{400}")
+        self.geometry(f"{400}x{500}")
         self.resizable(False, False)
 
         # configure grid layout
@@ -43,14 +44,26 @@ class App(customtkinter.CTk):
         self.switch_1 = customtkinter.CTkSwitch(master=self.radiobutton_frame, text="Предобработка видео")
         self.switch_1.grid(row=3, column=0, pady=5, padx=20, sticky="w")
 
+        self.label_slider_group = customtkinter.CTkLabel(master=self.radiobutton_frame, text="Пропуск кадров:")
+        self.label_slider_group.grid(row=4, column=0,  padx=20, pady=5,sticky="w")
+
+        self.slider = customtkinter.CTkSlider(master=self.radiobutton_frame, from_=1, to=10, number_of_steps=10, command=self.update_label)
+        self.slider.grid(row=5, column=0, padx=15, pady=5, sticky="w")
+        self.slider.set(1)
+
+        self.slider_value_label = customtkinter.CTkLabel(master=self.radiobutton_frame, text="Значение: 1")
+        self.slider_value_label.grid(row=5, column=1, padx=0, pady=0, sticky="w")
+
         self.main_button_1 = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2,
                                                      text_color=("gray10", "#DCE4EE"), text = "СТАРТ!!!", command=self.on_button_click)
-        self.main_button_1.grid(row=3, column=1, columnspan=2, padx=(20, 20), pady=(10, 0), sticky="nsew")
+        self.main_button_1.grid(row=3, column=1, columnspan=2, padx=(20, 20), pady=5, sticky="nsew")
 
         # create label to show selected file
-        self.selected_file_label = customtkinter.CTkLabel(self, text="QR-код БЭК основной найден: \n Все найденные QR-коды: \n 1 \n 2")
-        self.selected_file_label.grid(row=4, column=1, padx=20, pady=10, sticky="w")
+        self.selected_file_label = customtkinter.CTkLabel(self, text="QR-код: ")
+        self.selected_file_label.grid(row=4, column=1, padx=20, pady=5, sticky="w")
 
+        self.listbox = CTkListbox(master=self, command=self.show_value)
+        self.listbox.grid(row=5, column=1, columnspan=2, padx=15, pady=5, sticky="nsew")    
 
     def select_video(self):
         self.file_path = askopenfilename(title="Выберите видео файл", filetypes=[("Видео файлы", "*.mp4;*.avi;*.mov;*.mkv;*.flv")])
@@ -59,6 +72,13 @@ class App(customtkinter.CTk):
         else:
             print("Видео файл не выбран")
 
+    def update_label(self, value):
+        """Обновление текста в Label при изменении слайдера."""
+        self.slider_value_label.configure(text=f"Значение: {int(float(value))}")
+        print(f"Текущее значение слайдера: {int(float(value))}")
+    
+    def show_value(self, value):
+        print(f"Выбранная опция: {value}")
 
     def on_button_click(self):
         # Проверка, был ли выбран файл
@@ -72,18 +92,37 @@ class App(customtkinter.CTk):
         entry_value = self.entry.get()
 
         print(f"Параметр для поиска: {entry_value}")
+        slider_value = int(self.slider.get())
+        self.slider_value_label.configure(text=f"Значение: {slider_value}")
+        print(slider_value)
+        spisok = set()
+        self.listbox.delete(0, 'end')
+        self.selected_file_label.configure(text = "QR-код:")
 
         if switch_value:
             print("Предобработка видео: Включена")
+            print(switch_value)
         else:
             print("Предобработка видео: Отключена")
+            print(switch_value)
         
         if radio_value == 0:
             print("Выбранный режим: Режим реального времени")
-            realtime_scanning(self.file_path, entry_value)
+            spisok = realtime_scanning(self.file_path, entry_value, slider_value, switch_value)
+
         else:
             print("Выбранный режим: Режим видео")
-            scanning(self.file_path, entry_value, 'test_video.mp4')
+            spisok = scanning(self.file_path, entry_value, 'test_video.mp4', slider_value, switch_value)
+
+        k =0
+        for name in spisok:                
+            self.listbox.insert(k, name)
+            k+=1
+
+        if entry_value in spisok:
+            self.selected_file_label.configure(text = f"QR-код: \"{entry_value}\" Найден!!!")
+        else:
+            self.selected_file_label.configure(text = f"QR-код: \"{entry_value}\" Не найден!!!")
 
 
 if __name__ == "__main__":
