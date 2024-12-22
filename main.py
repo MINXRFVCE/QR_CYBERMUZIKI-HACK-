@@ -47,11 +47,11 @@ class App(customtkinter.CTk):
         self.label_slider_group = customtkinter.CTkLabel(master=self.radiobutton_frame, text="Пропуск кадров:")
         self.label_slider_group.grid(row=4, column=0,  padx=20, pady=5,sticky="w")
 
-        self.slider = customtkinter.CTkSlider(master=self.radiobutton_frame, from_=1, to=10, number_of_steps=10, command=self.update_label)
+        self.slider = customtkinter.CTkSlider(master=self.radiobutton_frame, from_=2, to=10, number_of_steps=8, command=self.update_label)
         self.slider.grid(row=5, column=0, padx=15, pady=5, sticky="w")
         self.slider.set(1)
 
-        self.slider_value_label = customtkinter.CTkLabel(master=self.radiobutton_frame, text="Значение: 1")
+        self.slider_value_label = customtkinter.CTkLabel(master=self.radiobutton_frame, text="Значение: 2")
         self.slider_value_label.grid(row=5, column=1, padx=0, pady=0, sticky="w")
 
         self.main_button_1 = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2,
