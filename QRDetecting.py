@@ -182,7 +182,9 @@ def scanning(video_path: str, valid_text: list, output_path: str, skip_frame:int
         qr_codes=False
         if frame_count % skip_frame == 0:  # Обрабатываем только каждый второй кадр
             qr_codes = qr_reader.detect_and_decode(frame, return_detections=True)
-            lastQR.clear()
+            for key in list(lastQR.keys()):
+                if not key in valid_text:
+                    del lastQR[key]
         else:
             for key, value in lastQR.items():
                 
