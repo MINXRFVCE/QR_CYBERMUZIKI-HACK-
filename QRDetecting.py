@@ -187,7 +187,6 @@ def scanning(video_path: str, valid_text: list, output_path: str, skip_frame:int
                     del lastQR[key]
         else:
             for key, value in lastQR.items():
-                
                 bbox_show(frame, (value[0], value[1]), (value[2], value[3]), key, value[4])
 
         #qr_codes = qr_reader.detect_and_decode(frame, return_detections=True)
