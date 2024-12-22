@@ -41,14 +41,9 @@ def realtime_scanning(video_path: str, valid_text: list, skip_frame: int, PredPr
         print(f"[ERROR] Не удалось открыть видеофайл: {video_path}")
         exit()
 
-    #
     qr_reader = QReader()
-    
-    #executor = ThreadPoolExecutor(max_workers=8)
-
+  
     # Функция для обработки QR-кодов
-    #def process_frame(frame):
-        #return qr_reader.detect_and_decode(frame, return_detections=True)
     SearchQRcode = set()
     dic = {}
     frame_count = 0
@@ -63,24 +58,14 @@ def realtime_scanning(video_path: str, valid_text: list, skip_frame: int, PredPr
             break
         if PredProc == 1:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            #frame = cv2.GaussianBlur(frame, (9,9), 0)
-            #frame = cv2.threshold(frame, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
-            #brightness = 10 
-            # Adjusts the contrast by scaling the pixel values by 2.3 
-            #contrast = 2.3  
-            #frame = cv2.addWeighted(frame, contrast, np.zeros(frame.shape, frame.dtype), 0, brightness) 
-            #kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5,5))
-            #frame = cv2.morphologyEx(frame, cv2.MORPH_CLOSE, kernel, iterations=2)
-            # frame = cv2.medianBlur(frame, 1)
-            #brightness = -100
-            #contrast = 1
-            #frame = cv2.addWeighted(frame, contrast, np.zeros(frame.shape, frame.dtype), 0, brightness)
-            #_, frame = cv2.threshold(frame, 0, 0, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+            frame = cv2.GaussianBlur(frame, (7,7), 0)
+            frame = cv2.adaptiveThreshold(frame, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11,2)
+            width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+            height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            frame = cv2.resize(frame, (width, height))
 
         qr_codes=False
 
-        #future = executor.submit(process_frame, frame)
-        #qr_codes = future.result()
         if frame_count % skip_frame == 0:  # Обрабатываем только каждый второй кадр
             qr_codes = qr_reader.detect_and_decode(frame, return_detections=True)            
             for key in list(dic.keys()):
@@ -92,19 +77,12 @@ def realtime_scanning(video_path: str, valid_text: list, skip_frame: int, PredPr
             for key, value in dic.items():
                 bbox_show(frame, (value[0], value[1]), (value[2], value[3]), key, value[4])
         
-        #qr_codes = qr_reader.detect_and_decode(frame, return_detections=True)
-            
-        #qr_codes = qr_reader.detect_and_decode(frame)
-        #qr_codes = False
-
         if qr_codes:
             for i in range(len(qr_codes[0])):
                 # Выводим название из первого tuple 
-                # qr = qr_codes[0] 
                 name = qr_codes[0][i]
 
                 # Если QR-код был считан, выводим его
-
                 if name is None:
                     print('[WARNING] QR-code не прочитан')
                     continue
@@ -113,11 +91,6 @@ def realtime_scanning(video_path: str, valid_text: list, skip_frame: int, PredPr
                     SearchQRcode.add(name)             
                 # Выводим bbox из второго tuple 
                 barcodeData = qr_codes[1][i]
-
-                #print(f"--- bbox: {barcodeData['bbox_xyxy']}")
-
-                # if len(barcodeData) > 0 and not barcodeData[0] is None:
-
                 try:
                     #  Получаем координаты bbox
                     x1 = int(barcodeData['bbox_xyxy'][0])
@@ -126,7 +99,6 @@ def realtime_scanning(video_path: str, valid_text: list, skip_frame: int, PredPr
                     y2 = int(barcodeData['bbox_xyxy'][3])
                     dic[name] = [x1,y1,x2,y2, name in valid_text]
                     # Рисуем прямоугольник
-                    #cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
                     bbox_show(frame, (x1,y1), (x2,y2), name, name in valid_text)
 
                 except Exception as e:
@@ -135,7 +107,6 @@ def realtime_scanning(video_path: str, valid_text: list, skip_frame: int, PredPr
         print(frame_count)
         frame_resized = cv2.resize(frame, (640, 480))
         cv2.imshow("QR Code Scanner", frame_resized)
-        # cv2.imshow("QR Code Scanner", frame )
         key = cv2.waitKey(1) & 0xFF
         if key == ord('q'):
             break
@@ -189,14 +160,11 @@ def scanning(video_path: str, valid_text: list, output_path: str, skip_frame:int
             for key, value in lastQR.items():
                 bbox_show(frame, (value[0], value[1]), (value[2], value[3]), key, value[4])
 
-        #qr_codes = qr_reader.detect_and_decode(frame, return_detections=True)
-
         if qr_codes:
 
             for i in range(len(qr_codes[0])):
 
                 # Выводим название из первого tuple 
-                # qr = qr_codes[0] 
                 name = qr_codes[0][i]
 
                 # Если QR-код был считан, выводим его
@@ -209,11 +177,6 @@ def scanning(video_path: str, valid_text: list, output_path: str, skip_frame:int
                 
                 # Выводим bbox из второго tuple 
                 barcodeData = qr_codes[1][i]
-
-                # print(f"--- bbox: {barcodeData['bbox_xyxy']}")
-
-                # if len(barcodeData) > 0 and not barcodeData[0] is None:
-
                 try:
                     #  Получаем координаты bbox
                     x1 = int(barcodeData['bbox_xyxy'][0])
@@ -223,7 +186,6 @@ def scanning(video_path: str, valid_text: list, output_path: str, skip_frame:int
 
                     lastQR[name] = [x1,y1,x2,y2, name in valid_text]
                     # Рисуем прямоугольник
-                    #cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
                     bbox_show(frame, (x1,y1), (x2,y2), name, name in valid_text)
 
                 except Exception as e:
