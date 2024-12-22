@@ -82,8 +82,11 @@ def realtime_scanning(video_path: str, valid_text: list, skip_frame: int, PredPr
         #future = executor.submit(process_frame, frame)
         #qr_codes = future.result()
         if frame_count % skip_frame == 0:  # Обрабатываем только каждый второй кадр
-            qr_codes = qr_reader.detect_and_decode(frame, return_detections=True)
-            dic.clear()
+            qr_codes = qr_reader.detect_and_decode(frame, return_detections=True)            
+            for key in list(dic.keys()):
+                if not key in valid_text:
+                    del dic[key]
+            #dic.clear()
             #array.clear()
         else:
             for key, value in dic.items():
@@ -163,7 +166,7 @@ def scanning(video_path: str, valid_text: list, output_path: str, skip_frame:int
     file_path = asksaveasfilename(defaultextension=".mp4", filetypes=[("MP4 files", "*.mp4")])
     new_video = cv2.VideoWriter(file_path, fourcc=cv2.VideoWriter.fourcc(*'mp4v'), fps=30, frameSize=(1920, 1080))
     SearchQRcode = set()
-    dic = {}
+    lastQR = {}
     frame_count=0
     while True:
         frame_count += 1
@@ -179,9 +182,10 @@ def scanning(video_path: str, valid_text: list, output_path: str, skip_frame:int
         qr_codes=False
         if frame_count % skip_frame == 0:  # Обрабатываем только каждый второй кадр
             qr_codes = qr_reader.detect_and_decode(frame, return_detections=True)
-            dic.clear()
+            lastQR.clear()
         else:
-            for key, value in dic.items():
+            for key, value in lastQR.items():
+                
                 bbox_show(frame, (value[0], value[1]), (value[2], value[3]), key, value[4])
 
         #qr_codes = qr_reader.detect_and_decode(frame, return_detections=True)
@@ -216,7 +220,7 @@ def scanning(video_path: str, valid_text: list, output_path: str, skip_frame:int
                     x2 = int(barcodeData['bbox_xyxy'][2])
                     y2 = int(barcodeData['bbox_xyxy'][3])
 
-                    dic[name] = [x1,y1,x2,y2, name in valid_text]
+                    lastQR[name] = [x1,y1,x2,y2, name in valid_text]
                     # Рисуем прямоугольник
                     #cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
                     bbox_show(frame, (x1,y1), (x2,y2), name, name in valid_text)
